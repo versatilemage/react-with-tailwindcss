@@ -27,17 +27,16 @@ function Home({ pokemon, previous, nextpage, page}) {
             </div>
 
             <div className="pt-8 pb-20 px-10 mx-auto mt-10 mb-10 bg-sky-900 w-11/12 shadow-2xl shadow-black grid grid-cols-4 box-border gap-4">
-                {pokemon.map(i =>
+                {pokemon.map((i) =>
                 (
                     <>
                         <div className="bg-orange-600 w-12/12 rounded-xl flex flex-col items-center justify-center gap-4 border-y-cyan-600 border-4 border-x-indigo-500 shadow shadow-cyan-400 transition ease-in-out delay-50 hover:scale-105 px-15 pb-40 hover:bg-orange-500">
                             <div className="text-white text-3xl font-bold pt-5 w-full text-center mb-5 capitalize" key={i.name}>{i.name}</div>
                             
-                            <div className="w-3/4 bg-slate-600 px-10 py-28 rounded-xl border-2 border-black"></div>
+                            <img src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${i.url.split("/").slice(-2,-1)[0]}.svg`} alt="no img found"/>
 
                             <div className="text-white text-2xl text-center w-full uppercase">stats</div>
                         </div>
-                        {/* <img src={i.sprites.front_default} alt="no img found"/> */}
                     </>
                 ))}
             </div>
