@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Login from "./components/login/login";
 import Signup from './components/signup/signup';
 import Home from "./components/home/home";
+import Userprofile from "./components/userprofile/userprofile";
 import axios from "axios";
 // import pagenotfound from "./components/pagenotfound/pagenotfound"
 // import {useDispatch} from "react-redux"
@@ -27,7 +28,7 @@ function App() {
       setloading(false)
       setnextpage(res.data.next)
       setbeforepage(res.data.previous)
-      setpokemon(res.data.results.map(i => i))
+      setpokemon(res.data.results)
       function createpokestats(result){
         result.foreach((poke) => {
           const data = axios.get(`https://pokeapi.co/api/v2/pokemon/${poke.name}`)
@@ -62,6 +63,7 @@ function App() {
         <Route exact path="/" element={<Login />} />
         <Route path="signup/" element={<Signup />} />
         <Route path="Home/" element={<Home pokemon={pokemon} previous={previouspageurl} nextpage={nextpageurl} page={currentpage}/>} />
+        <Route path="userprofile/" element={<Userprofile/>}/>
         {/* <Route element={<pagenotfound />}/> */}
       </Routes>
 
