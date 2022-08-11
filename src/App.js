@@ -6,25 +6,27 @@ import Signup from './components/signup/signup';
 import Home from "./components/home/home";
 import Userprofile from "./components/userprofile/userprofile";
 import axios from "axios";
+// import { forpage } from "./features/pokecards/createslice";
+// import { useSelector } from "react-redux";
+// import { useDispatch } from "react-redux";
+// import { addPokemon } from "./features/pokecards/createslice";
 // import pagenotfound from "./components/pagenotfound/pagenotfound"
-// import {useDispatch} from "react-redux"
 // import { addPokemon } from "./features/createslice";
 
 function App() {
+  // const pokepage = useSelector(state => state.forpage)
   const [pokemon, setpokemon] = useState([])
+  // const [currentpage, setcurrentpage] = useState(pokepage)
   const [currentpage, setcurrentpage] = useState("https://pokeapi.co/api/v2/pokemon")
   const [nextpage, setnextpage] = useState()
   const [beforepage, setbeforepage] = useState()
   const [loading, setloading] = useState(true)
   const [pokestats, setpokestats] = useState()
-  // const dispatch = useDispatch()
 
+  // const dispatch = useDispatch()
   useEffect(() => {
     setloading(true)
-    let cancel
-    axios.get(currentpage, {
-      cancelToken: new axios.CancelToken(c => (cancel = c))
-    }).then(res => {
+    axios.get(currentpage).then(res => {
       setloading(false)
       setnextpage(res.data.next)
       setbeforepage(res.data.previous)
@@ -37,11 +39,10 @@ function App() {
       }
       createpokestats(res.data.results)
       console.log(pokestats,"pokestat")
+      // dispatch(addPokemon(res.data))
     });
     //unmount
-    return () => cancel()
   }, [currentpage])
-
   console.log(pokemon)
 
   if (loading) return "loading..."
@@ -63,7 +64,7 @@ function App() {
         <Route exact path="/" element={<Login />} />
         <Route path="signup/" element={<Signup />} />
         <Route path="Home/" element={<Home pokemon={pokemon} previous={previouspageurl} nextpage={nextpageurl} page={currentpage}/>} />
-        <Route path="userprofile/" element={<Userprofile/>}/>
+        <Route path="Home/userprofile/" element={<Userprofile/>}/>
         {/* <Route element={<pagenotfound />}/> */}
       </Routes>
 
