@@ -1,10 +1,21 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 
 const initialState = {
     allPokemon: [],
-    page: "https://pokeapi.co/api/v2/pokemon"
-
+    loading: false,
 }
+
+export const getPokemonDetails = createAsyncThunk(
+    "allPokemon/getData",
+    async(arg, {rejectWithValue}) => {
+         try{
+            const{data} = await axios.get("https://pokeapi.co/api/v2/pokemon")
+            return data
+        } catch (error) {
+            rejectWithValue(error.response.data)
+        }
+})
 
 const pokeSlice = createSlice({
     name: "allPokemon",
@@ -12,13 +23,9 @@ const pokeSlice = createSlice({
     reducers: {
         addPokemon: (state, {payload}) => {
             state.allPokemon += payload
-        },
-        forpage: (state) => {
-            state.page = state
         }
-    }
+    },
+    // extraReducers:() => {},
 })
 
-export const { addPokemon, forpage } = pokeSlice.actions;
-export const getAllpokemon = (state) => state.allPokemon.allPokemon
-export default pokeSlice.reducer;
+export default pokeSlice;
