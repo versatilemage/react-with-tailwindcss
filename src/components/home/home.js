@@ -1,8 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {Link} from "react-router-dom"
+import { useDispatch } from "react-redux";
+import { getPokemonDetails } from "../../features/pokecards/createslice";
 
 function Home({ pokemon, previous, nextpage, page }) {
 
+    const dispatch = useDispatch()
+    useEffect(()=> {
+        dispatch(getPokemonDetails)
+    }, [])
     return (
         <>
 
@@ -15,7 +21,7 @@ function Home({ pokemon, previous, nextpage, page }) {
 
                         <div className="hidden md:flex space-x-8">
 
-                            <Link to="userprofile/" className="text-2xl font-medium text-white rounded-3xl px-6 pt-2 p-3 hover:bg-red-500 hover:text-black">
+                            <Link to="Home/userprofile/" className="text-2xl font-medium text-white rounded-3xl px-6 pt-2 p-3 hover:bg-red-500 hover:text-black">
                                 user profile
                             </Link>
 
