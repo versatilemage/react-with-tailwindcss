@@ -20,19 +20,16 @@ function App() {
   const [currentpage, setcurrentpage] = useState("https://pokeapi.co/api/v2/pokemon")
   const [nextpage, setnextpage] = useState()
   const [beforepage, setbeforepage] = useState()
-  const [loading, setloading] = useState(true)
   const [pokestats, setpokestats] = useState()
 
   // const dispatch = useDispatch()
   useEffect(() => {
-    setloading(true)
     axios.get(currentpage).then(res => {
-      setloading(false)
       setnextpage(res.data.next)
       setbeforepage(res.data.previous)
       setpokemon(res.data.results)
       function createpokestats(result){
-        result.foreach((poke) => {
+        result((poke) => {
           const data = axios.get(`https://pokeapi.co/api/v2/pokemon/${poke.name}`)
           setpokestats(current => [...current, data])
         })
@@ -41,11 +38,8 @@ function App() {
       console.log(pokestats,"pokestat")
       // dispatch(addPokemon(res.data))
     });
-    //unmount
   }, [currentpage])
   console.log(pokemon)
-
-  if (loading) return "loading..."
 
   function nextpageurl() {
     setcurrentpage(nextpage)
