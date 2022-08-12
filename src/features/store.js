@@ -1,6 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { addPokemon } from "./pokecards/createslice";
+import pokeSlice from "./pokecards/createslice";
+// import { addPokemon } from "./pokecards/createslice";
 
-export const store = configureStore({
-    reducer:addPokemon
+export const Store = configureStore({
+    reducer:{
+        allpokemon: pokeSlice.reducer
+    }
 })
