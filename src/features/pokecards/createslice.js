@@ -2,8 +2,9 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const initialState = {
-    allPokemon: [],
-    loading: false,
+    allPokeMon: [],
+    loadingStatus: false,
+    status:""
 }
 
 export const getPokemonDetails = createAsyncThunk(
@@ -20,12 +21,21 @@ export const getPokemonDetails = createAsyncThunk(
 const pokeSlice = createSlice({
     name: "allPokemon",
     initialState,
-    reducers: {
-        addPokemon: (state, {payload}) => {
-            state.allPokemon += payload
-        }
+    reducers: {},
+    extraReducers:{
+        [getPokemonDetails.fulfilled]: (state, action) => {
+            state.loadingStatus = false;
+            state.allPokeMon = action.payload.results;
+          },
+        [getPokemonDetails.rejected]: (state, action) => {
+            state.status = 'Sorry! something went wrong';
+        },
+        [getPokemonDetails.pending]: (state, action) => {
+            state.loadingStatus = true;
+        },
     },
-    // extraReducers:() => {},
 })
 
-export default pokeSlice;
+export default pokeSlice.reducer;
+
+export const { addPokeMon } = pokeSlice.actions;
