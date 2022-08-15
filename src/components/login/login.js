@@ -1,11 +1,27 @@
-import { Link } from "react-router-dom"
-// import { useDispatch } from "react-redux"
-// import pokeSlice from "../../features/pokecards/createslice"
+import { Link } from "react-router-dom";
+import { useState } from "react";
+import axios from "axios";
 
 function Login() {
+    const [name, setname] = useState("")
+    const [forPassword, setforPassword] = useState("")
+
+    // const formValues = (e, setvalue) => {
+    //     setvalue(e.target.value)
+    // }
+
+    useEffect(()=>{
+        e.preventDefault()
+        try {
+            await axios.post("http://localhost:9000/testAPI", {
+                name, forPassword
+            })
+        } catch (error) {
+            console.log(error)
+        }
+     },[])
     return (
         <>
-
             <header className="bg-sky-900 rounded-br-3xl">
                 <nav className="p-6 mx-auto container relative">
                     <div className="flex items-center justify-between">
@@ -15,11 +31,11 @@ function Login() {
 
                         <div className="hidden md:flex space-x-8">
 
-                            <Link to="signup/" className="text-2xl font-medium text-white rounded-3xl px-6 pt-2 p-3 hover:bg-red-500 hover:text-black">
+                            <Link to="/signup" className="text-2xl font-medium text-white rounded-3xl px-6 pt-2 p-3 hover:bg-red-500 hover:text-black">
                                 Signup
                             </Link>
 
-                            <Link to="Home/" className="text-2xl font-medium text-white rounded-3xl px-6 pt-2 p-3 hover:bg-red-500 hover:text-black">
+                            <Link to="/Home" className="text-2xl font-medium text-white rounded-3xl px-6 pt-2 p-3 hover:bg-red-500 hover:text-black">
                                 pokemon
                             </Link>
 
@@ -35,20 +51,24 @@ function Login() {
                     <div className="bg-red-900 rounded-3xl p-2 border hover:bg-red-500 animate-wiggled"></div>
                 </div>
 
-                <form className="container flex-col flex items-center justify-center gap-6 bg-black w-80 h-80 rounded-xl">
+                <form className="container flex-col flex items-center justify-center gap-6 bg-black w-80 h-80 rounded-xl" onSubmit={postingname}>
                     <input
                         type="text"
                         placeholder="username"
+                        value={name}
+                        onChange={(i) => setname(i.target.value)}
                         className="px-5 py-3 rounded-xl border-2 border-amber-900 shadow shadow-black"
                     />
 
                     <input
                         type="password"
                         placeholder="password"
+                        value={forPassword}
+                        onChange={(i) => setforPassword(i.target.value)}
                         className="px-5 py-3 rounded-xl border-2 border-amber-900 shadow shadow-black"
                     />
 
-                    <button className="text-lg uppercase font-bold bg-red-600 px-6 py-2 text-white rounded-xl border-2 border-black shadow shadow-black hover:text-black">
+                    <button className="text-lg uppercase font-bold bg-red-600 px-6 py-2 text-white rounded-xl border-2 border-black shadow shadow-black hover:text-black" type="submit">
                         login
                     </button>
 
