@@ -1,25 +1,77 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
-import axios from "axios";
+import { useState, useEffect } from "react";
+// import axios from "axios";
 
 function Login() {
-    const [name, setname] = useState("")
-    const [forPassword, setforPassword] = useState("")
+    const [loginDetails, setloginDetails] = useState({
+        loginuser: "",
+        loginpassword: ""
+    })
+
+    const [Loginerrors, setLoginerrors] = useState({})
+    console.log(Loginerrors)
+    const loginCompare = ({})
+
+    const [loginstate, setloginstate] = useState(false)
+
+    const loginChange = (e) => {
+        const { name, value } = e.target
+        setloginDetails({ ...loginDetails, [name]: value })
+        console.log(loginDetails, "login-details")
+    }
+
+    const loginValdetails = JSON.parse((localStorage.getItem("User")));
+
+    loginValdetails.filter((e) => {
+        loginCompare.username = e.username
+        loginCompare.password = e.password
+    })
+    console.log(loginCompare)
+    console.log(loginCompare.username)
+
+    const loginSubmit = (e) => {
+        e.preventDefault();
+        setloginstate(true)
+        setLoginerrors(loginValidate(loginDetails))
+    }
+
+    useEffect(() => {
+        if (Object.keys(Loginerrors).length === 0 && loginstate) {
+            console.log(loginDetails)
+        }
+    }, [Loginerrors])
+
+    const loginValidate = (e) => {
+        const errors = {}
+        if (e.username !== loginCompare.username) {
+            errors.username = "No user is found in this name"
+        }
+        else if (!e.username) {
+            errors.username = "Please enter the username"
+        }
+        if (e.password !== loginCompare.password) {
+            errors.password = "The password is not correct, please try again"
+        }
+        else if (!e.password) {
+            errors.password = "Please enter your password"
+        }
+        return errors
+    }
 
     // const formValues = (e, setvalue) => {
     //     setvalue(e.target.value)
     // }
 
-    useEffect(()=>{
-        e.preventDefault()
-        try {
-            await axios.post("http://localhost:9000/testAPI", {
-                name, forPassword
-            })
-        } catch (error) {
-            console.log(error)
-        }
-     },[])
+    // useEffect(()=>{
+    //     e.preventDefault()
+    //     try {
+    //         await axios.post("http://localhost:9000/testAPI", {
+    //             name, forPassword
+    //         })
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
+    //  },[])
     return (
         <>
             <header className="bg-sky-900 rounded-br-3xl">
@@ -51,22 +103,26 @@ function Login() {
                     <div className="bg-red-900 rounded-3xl p-2 border hover:bg-red-500 animate-wiggled"></div>
                 </div>
 
-                <form className="container flex-col flex items-center justify-center gap-6 bg-black w-80 h-80 rounded-xl" onSubmit={postingname}>
+                <form className="container flex-col flex items-center justify-center gap-3 bg-black w-80 rounded-xl py-14" onSubmit={loginSubmit}>
                     <input
                         type="text"
                         placeholder="username"
-                        value={name}
-                        onChange={(i) => setname(i.target.value)}
+                        name="loginuser"
+                        value={loginDetails.loginuser}
+                        onChange={loginChange}
                         className="px-5 py-3 rounded-xl border-2 border-amber-900 shadow shadow-black"
                     />
+                    <p className="text-red-500 text-xl text-center">{Loginerrors.password}</p>
 
                     <input
                         type="password"
                         placeholder="password"
-                        value={forPassword}
-                        onChange={(i) => setforPassword(i.target.value)}
+                        name="loginpassword"
+                        value={loginDetails.loginpassword}
+                        onChange={loginChange}
                         className="px-5 py-3 rounded-xl border-2 border-amber-900 shadow shadow-black"
                     />
+                    <p className="text-red-500 text-xl text-center">{Loginerrors.username}</p>
 
                     <button className="text-lg uppercase font-bold bg-red-600 px-6 py-2 text-white rounded-xl border-2 border-black shadow shadow-black hover:text-black" type="submit">
                         login
