@@ -6,36 +6,43 @@ import Signup from './components/signup/signup';
 import Home from "./components/home/home";
 import Userprofile from "./components/userprofile/userprofile";
 import axios from "axios";
+// import { useSelector, useDispatch } from "react-redux";
+// import { getPokemonDetails } from "./features/pokecards/createslice";
+// import {pagenotfound} from "./components/pagenotfound/pagenotfound";
 // import { forpage } from "./features/pokecards/createslice";
-// import { useSelector } from "react-redux";
-// import { useDispatch } from "react-redux";
-// import { addPokemon } from "./features/pokecards/createslice";
-// import pagenotfound from "./components/pagenotfound/pagenotfound"
 // import { addPokemon } from "./features/createslice";
 
 function App() {
   // const pokepage = useSelector(state => state.forpage)
-  const [pokemon, setpokemon] = useState([])
-  // const [currentpage, setcurrentpage] = useState(pokepage)
-  const [currentpage, setcurrentpage] = useState("https://pokeapi.co/api/v2/pokemon")
+  const [currentpage, setcurrentpage] = useState("")
   const [nextpage, setnextpage] = useState()
   const [beforepage, setbeforepage] = useState()
   const [pokestats, setpokestats] = useState()
-
+  const [pokemon, setpokemon] = useState([])
   // const dispatch = useDispatch()
+  // const {allPokeMon} = useSelector((state) => state.pokeMonList);
+  // const {loadingStatus} = useSelector((state) => state.pokeMonList);
+  // const [loading, setloading] = useState(false)
+  //   console.log(loading);
+  //   setpokemon(allPokeMon)
+
+  // useEffect(() => {
+  //   dispatch(getPokemonDetails())
+  // }, [])
+
   useEffect(() => {
-    axios.get(currentpage).then(res => {
-      setnextpage(res.data.next)
-      setbeforepage(res.data.previous)
-      setpokemon(res.data.results)
-      function createpokestats(result){
+    axios.get("/users/").then(res => {
+      setnextpage(res.data.userList.next)
+      setbeforepage(res.data.userList.previous)
+      setpokemon(res.data.userList.results)
+      function createpokestats(result) {
         result((poke) => {
-          const data = axios.get(`https://pokeapi.co/api/v2/pokemon/${poke.name}`)
+          const data = axios.get(`${poke.userList}${poke.name}`)
           setpokestats(current => [...current, data])
         })
       }
       createpokestats(res.data.results)
-      console.log(pokestats,"pokestat")
+      // console.log(pokestats,"pokestat")
       // dispatch(addPokemon(res.data))
     });
   }, [currentpage])
@@ -49,17 +56,16 @@ function App() {
     setcurrentpage(beforepage)
   }
 
-  // console.log(pokestats)
+  console.log(pokestats)
 
   return (
     <>
-
       <Routes>
         <Route exact path="/" element={<Login />} />
-        <Route path="signup/" element={<Signup />} />
-        <Route path="Home/" element={<Home pokemon={pokemon} previous={previouspageurl} nextpage={nextpageurl} page={currentpage}/>} />
-        <Route path="Home/userprofile/" element={<Userprofile/>}/>
-        {/* <Route element={<pagenotfound />}/> */}
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/Home" element={<Home pokemon={pokemon} previous={previouspageurl} nextpage={nextpageurl} page={currentpage} />} />
+        <Route path="/userprofile" element={<Userprofile />} />
+        {/* <Route path="" element={<pagenotfound />}/> */}
       </Routes>
 
     </>
